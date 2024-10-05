@@ -5,6 +5,7 @@ import med.voll.api.dto.MedicoDto;
 import med.voll.api.entity.MedicoEntity;
 import med.voll.api.repository.MedicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
@@ -13,6 +14,8 @@ import org.springframework.validation.annotation.Validated;
 public class MedicoComponent {
     @Autowired
     private final MedicoRepository medicoRepository;
+
+    final int MEDICOS_POR_PAGINA = 10;
 
     public MedicoComponent(MedicoRepository medicoRepository) {
         this.medicoRepository = medicoRepository;
@@ -37,4 +40,13 @@ public class MedicoComponent {
         log.info("Entrou no Component para salvar uma instância de Médico");
         medicoRepository.save(medico);
     }
+
+    public Page<MedicoDto> listarMedicos(int pagina) {
+        Pageable pageable = PageRequest.of(pagina, MEDICOS_POR_PAGINA, Sort.by("nome").ascending());
+        Page<MedicoEntity> medicosPage = medicoRepository.findAll(pageable);
+
+        return medicosPage.map(MedicoDto::new);
+    }
+
+
 }

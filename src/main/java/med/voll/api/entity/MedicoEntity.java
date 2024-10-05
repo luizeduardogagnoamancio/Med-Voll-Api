@@ -20,7 +20,7 @@ public class MedicoEntity {
     private String nome;
 
     @Column(name = "telefone")
-    private Long telefone;
+    private String telefone;
 
     @Column(name = "email")
     private String email;

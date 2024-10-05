@@ -4,6 +4,7 @@ import lombok.extern.log4j.Log4j2;
 import med.voll.api.component.MedicoComponent;
 import med.voll.api.dto.MedicoDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -16,13 +17,13 @@ public class MedicoService {
     @Validated
     public void cadastarMedico(MedicoDto medico) {
         log.info("Entrou no Service para criar uma solicitação de cadastro de médico");
-        //fazer validação
-        validacoes(medico);
         medicoComponent.salvar(medicoComponent.criarMedico(medico));
     }
 
-    private void validacoes(MedicoDto medico) {
-
+    @Validated
+    public Page<MedicoDto> listarMedicos(int pagina) {
+        log.info("Entrou no Service para criar uma solicitação de listagem de médicos");
+        return medicoComponent.listarMedicos(pagina);
     }
 
 }

@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import med.voll.api.entity.MedicoEntity;
 
 @Getter
 @Setter
@@ -18,19 +19,28 @@ public class MedicoDto {
     private String email;
 
     @NotNull(message = "O telefone é obrigatório")
-    @Size(min = 1, max = 15, message = "O telefone deve ter entre 1 e 15 caracteres")
-    private Long telefone;
+    @Size(min = 8, max = 15, message = "O telefone deve ter entre 8 e 15 caracteres")
+    private String telefone;
 
     @NotNull(message = "O CRM é obrigatório")
-    @Size(min = 10, max = 15, message = "O CRM deve ter entre 10 e 15 caracteres")
+    @Size(min = 8, max = 15, message = "O CRM deve ter entre 8 e 15 caracteres")
     private String crm;
 
     @NotNull(message = "A especialidade é obrigatória")
-    @Size(min = 50, max = 100, message = "A especialidade deve ter entre 50 e 100 caracteres")
+    @Size(min = 5, max = 100, message = "A especialidade deve ter entre 5 e 100 caracteres")
     private String especialidade;
 
     @NotNull(message = "O endereço é obrigatório")
-    @Size(min = 200, max = 255, message = "O endereço deve ter entre 200 e 255 caracteres")
+    @Size(min = 25, max = 255, message = "O endereço deve ter entre 200 e 255 caracteres")
     private String endereco;
+
+    public MedicoDto(MedicoEntity medico) {
+        this.nome = medico.getNome();
+        this.telefone = medico.getTelefone();
+        this.email = medico.getEmail();
+        this.crm = medico.getCrm();
+        this.especialidade = medico.getEspecialidade();
+        this.endereco = medico.getEndereco();
+    }
 
 }
