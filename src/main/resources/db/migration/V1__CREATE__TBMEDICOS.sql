@@ -1,0 +1,9 @@
+CREATE TABLE TB_MEDICOS (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    telefone BIGINT NOT NULL,
+    crm VARCHAR(50) NOT NULL UNIQUE,
+    especialidade VARCHAR(100) NOT NULL,
+    endereco VARCHAR(255)
+);
