@@ -2,12 +2,16 @@ package med.voll.api.component;
 
 import lombok.extern.log4j.Log4j2;
 import med.voll.api.dto.MedicoDto;
+import med.voll.api.dto.SolicitacaoMedicoAtualizarDto;
 import med.voll.api.entity.MedicoEntity;
 import med.voll.api.repository.MedicoRepository;
+import med.voll.api.utils.MedicoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
+
+import java.util.Optional;
 
 @Log4j2
 @Component
@@ -35,17 +39,37 @@ public class MedicoComponent {
 
     }
 
-
     public void salvar(MedicoEntity medico) {
         log.info("Entrou no Component para salvar uma instância de Médico");
         medicoRepository.save(medico);
     }
 
     public Page<MedicoDto> listarMedicos(int pagina) {
+        log.info("Entrou no Component para listar médicos");
         Pageable pageable = PageRequest.of(pagina, MEDICOS_POR_PAGINA, Sort.by("nome").ascending());
         Page<MedicoEntity> medicosPage = medicoRepository.findAll(pageable);
 
         return medicosPage.map(MedicoDto::new);
+    }
+
+    public MedicoEntity buscarPorCrm(String crm) {
+        log.info("Entrou no Component para buscar médico por crm");
+        Optional<MedicoEntity> medicoOptional = medicoRepository.findByCrm(crm);
+
+        return medicoOptional.orElseThrow(() -> new RuntimeException("Médico não encontrado com o CRM: " + crm));
+    }
+
+    public void atualizarMedico(String crm, SolicitacaoMedicoAtualizarDto solicitacaoMedicoAtualizarDto) {
+        log.info("Entrou no Component para atualizar um médico");
+        MedicoEntity medicoEntity = buscarPorCrm(crm);
+
+        try {
+            MedicoUtils.copiarNonNullProperties(solicitacaoMedicoAtualizarDto, medicoEntity);
+        } catch (IllegalAccessError e) {
+            throw new RuntimeException("Erro ao atualizar médico", e);
+        }
+
+        medicoRepository.save(medicoEntity);
     }
 
 
