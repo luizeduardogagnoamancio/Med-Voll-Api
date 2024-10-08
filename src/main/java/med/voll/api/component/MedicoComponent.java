@@ -61,15 +61,22 @@ public class MedicoComponent {
 
     public void atualizarMedico(String crm, SolicitacaoMedicoAtualizarDto solicitacaoMedicoAtualizarDto) {
         log.info("Entrou no Component para atualizar um médico");
-        MedicoEntity medicoEntity = buscarPorCrm(crm);
+        MedicoEntity medico = buscarPorCrm(crm);
 
         try {
-            MedicoUtils.copiarNonNullProperties(solicitacaoMedicoAtualizarDto, medicoEntity);
+            MedicoUtils.copiarNonNullProperties(solicitacaoMedicoAtualizarDto, medico);
         } catch (IllegalAccessError e) {
             throw new RuntimeException("Erro ao atualizar médico", e);
         }
 
-        medicoRepository.save(medicoEntity);
+        medicoRepository.save(medico);
+    }
+
+    public void excluirMedico(String crm) {
+        log.info("Entrou no Component para excluir um médico");
+        MedicoEntity medico = buscarPorCrm(crm);
+
+        medicoRepository.delete(medico);
     }
 
 

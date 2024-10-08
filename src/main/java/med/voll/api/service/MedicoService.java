@@ -33,4 +33,10 @@ public class MedicoService {
         medicoComponent.atualizarMedico(crm, solicitacaoMedicoAtualizarDto);
     }
 
+    @Validated
+    public void excluirMedico(String crm) {
+        log.info("Entrou no Service para criar uma solicitação de exclusão de médico");
+        medicoComponent.excluirMedico(crm);
+    }
+
 }

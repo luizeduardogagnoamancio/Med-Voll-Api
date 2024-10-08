@@ -43,4 +43,13 @@ public class MedicoController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @DeleteMapping(value = "excluir/{crm}")
+    public ResponseEntity<Void> excluirMedico(@PathVariable String crm) {
+        log.info("DELETE - entrou no endpoint medico/excluir");
+        medicoService.excluirMedico(crm);
+        log.info("DELETE - saindo do endpoint medico/excluir");
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 }
