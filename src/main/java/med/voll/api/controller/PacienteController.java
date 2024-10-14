@@ -1,10 +1,9 @@
 package med.voll.api.controller;
 
 import lombok.extern.log4j.Log4j2;
-import med.voll.api.dto.MedicoDto;
 import med.voll.api.dto.PacienteDto;
 import med.voll.api.dto.PacienteDtoListagem;
-import med.voll.api.dto.SolicitacaoMedicoAtualizarDto;
+import med.voll.api.dto.SolicitacaoPacienteAtualizarDto;
 import med.voll.api.service.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,6 +33,16 @@ public class PacienteController {
     public Page<PacienteDtoListagem> listarPacientesPorPagina(@RequestParam(defaultValue = "0") int pagina) {
         log.info("GET - entrou no endpoint medico/listar");
         return pacienteService.listarPacientes(pagina);
+    }
+
+    @PutMapping(value = "atualizar/{cpf}")
+    public ResponseEntity<Void> atualizarPaciente(
+            @PathVariable String cpf,
+            @RequestBody SolicitacaoPacienteAtualizarDto solicitacaoPacienteAtualizarDto) {
+        log.info("PUT - entrou no endpoint paciente/atualizar");
+        pacienteService.atualizarPaciente(cpf, solicitacaoPacienteAtualizarDto);
+        log.info("PUT - saindo do endpoint paciente/atualizar");
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

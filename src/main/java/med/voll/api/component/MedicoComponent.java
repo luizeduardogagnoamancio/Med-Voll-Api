@@ -7,12 +7,16 @@ import med.voll.api.dto.SolicitacaoMedicoAtualizarDto;
 import med.voll.api.entity.MedicoEntity;
 import med.voll.api.repository.MedicoRepository;
 import med.voll.api.utils.MedicoUtils;
+import med.voll.api.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Log4j2
 @Component
@@ -62,9 +66,10 @@ public class MedicoComponent {
     public void atualizarMedico(String crm, SolicitacaoMedicoAtualizarDto solicitacaoMedicoAtualizarDto) {
         log.info("Entrou no Component para atualizar um médico");
         MedicoEntity medico = buscarPorCrm(crm);
+        Set<String> camposIgnorados = Set.of("email", "crm", "especialidade");
 
         try {
-            MedicoUtils.copiarNonNullProperties(solicitacaoMedicoAtualizarDto, medico);
+            Utils.copiarNonNullProperties(solicitacaoMedicoAtualizarDto, medico, camposIgnorados);
         } catch (IllegalAccessError e) {
             throw new RuntimeException("Erro ao atualizar médico", e);
         }

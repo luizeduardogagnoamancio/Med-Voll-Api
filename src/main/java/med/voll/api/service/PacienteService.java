@@ -1,30 +1,14 @@
 package med.voll.api.service;
 
-import lombok.extern.log4j.Log4j2;
-import med.voll.api.component.PacienteComponent;
 import med.voll.api.dto.PacienteDto;
 import med.voll.api.dto.PacienteDtoListagem;
-import org.springframework.beans.factory.annotation.Autowired;
+import med.voll.api.dto.SolicitacaoPacienteAtualizarDto;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
-@Service
-@Log4j2
-public class PacienteService {
+public interface PacienteService {
+    void cadastarPaciente(PacienteDto paciente);
 
-    @Autowired
-    private PacienteComponent pacienteComponent;
+    Page<PacienteDtoListagem> listarPacientes(int pagina);
 
-    @Validated
-    public void cadastarPaciente(PacienteDto paciente) {
-        log.info("Entrou no Service para criar uma solicitação de cadastro de paciente");
-        pacienteComponent.salvar(pacienteComponent.criarPaciente(paciente));
-    }
-
-    @Validated
-    public Page<PacienteDtoListagem> listarPacientes(int pagina) {
-        log.info("Entrou no Service para criar uma solicitação de listagem de médicos");
-        return pacienteComponent.listarPacientes(pagina);
-    }
+    void atualizarPaciente(String crm, SolicitacaoPacienteAtualizarDto solicitacaoMedicoAtualizarDto);
 }
