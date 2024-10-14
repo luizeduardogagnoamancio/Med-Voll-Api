@@ -3,6 +3,7 @@ package med.voll.api.service;
 import lombok.extern.log4j.Log4j2;
 import med.voll.api.component.MedicoComponent;
 import med.voll.api.dto.MedicoDto;
+import med.voll.api.dto.MedicoDtoListagem;
 import med.voll.api.dto.SolicitacaoMedicoAtualizarDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,7 +23,7 @@ public class MedicoService {
     }
 
     @Validated
-    public Page<MedicoDto> listarMedicos(int pagina) {
+    public Page<MedicoDtoListagem> listarMedicos(int pagina) {
         log.info("Entrou no Service para criar uma solicitação de listagem de médicos");
         return medicoComponent.listarMedicos(pagina);
     }

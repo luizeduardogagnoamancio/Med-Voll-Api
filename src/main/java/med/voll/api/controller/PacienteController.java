@@ -3,6 +3,8 @@ package med.voll.api.controller;
 import lombok.extern.log4j.Log4j2;
 import med.voll.api.dto.MedicoDto;
 import med.voll.api.dto.PacienteDto;
+import med.voll.api.dto.PacienteDtoListagem;
+import med.voll.api.dto.SolicitacaoMedicoAtualizarDto;
 import med.voll.api.service.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,7 +31,7 @@ public class PacienteController {
     }
 
     @GetMapping(value = "listar")
-    public Page<PacienteDto> listarPacientesPorPagina(@RequestParam(defaultValue = "0") int pagina) {
+    public Page<PacienteDtoListagem> listarPacientesPorPagina(@RequestParam(defaultValue = "0") int pagina) {
         log.info("GET - entrou no endpoint medico/listar");
         return pacienteService.listarPacientes(pagina);
     }

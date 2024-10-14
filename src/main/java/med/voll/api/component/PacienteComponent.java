@@ -4,6 +4,7 @@ package med.voll.api.component;
 import lombok.extern.log4j.Log4j2;
 import med.voll.api.dto.MedicoDto;
 import med.voll.api.dto.PacienteDto;
+import med.voll.api.dto.PacienteDtoListagem;
 import med.voll.api.entity.MedicoEntity;
 import med.voll.api.entity.PacienteEntity;
 import med.voll.api.repository.PacienteRepository;
@@ -42,7 +43,7 @@ public class PacienteComponent {
         pacienteRepository.save(paciente);
     }
 
-    public Page<PacienteDto> listarPacientes(int pagina) {
+    public Page<PacienteDtoListagem> listarPacientes(int pagina) {
         log.info("Entrou no Component para listar pacientes");
         Pageable pageable = PageRequest.of(pagina, PACIENTES_POR_PAGINA, Sort.by("nome").ascending());
 

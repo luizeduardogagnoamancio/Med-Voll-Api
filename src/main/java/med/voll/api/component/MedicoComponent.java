@@ -2,6 +2,7 @@ package med.voll.api.component;
 
 import lombok.extern.log4j.Log4j2;
 import med.voll.api.dto.MedicoDto;
+import med.voll.api.dto.MedicoDtoListagem;
 import med.voll.api.dto.SolicitacaoMedicoAtualizarDto;
 import med.voll.api.entity.MedicoEntity;
 import med.voll.api.repository.MedicoRepository;
@@ -44,12 +45,11 @@ public class MedicoComponent {
         medicoRepository.save(medico);
     }
 
-    public Page<MedicoDto> listarMedicos(int pagina) {
+    public Page<MedicoDtoListagem> listarMedicos(int pagina) {
         log.info("Entrou no Component para listar médicos");
         Pageable pageable = PageRequest.of(pagina, MEDICOS_POR_PAGINA, Sort.by("nome").ascending());
-        Page<MedicoEntity> medicosPage = medicoRepository.findAll(pageable);
 
-        return medicosPage.map(MedicoDto::new);
+        return medicoRepository.listarMedicos(pageable);
     }
 
     public MedicoEntity buscarPorCrm(String crm) {

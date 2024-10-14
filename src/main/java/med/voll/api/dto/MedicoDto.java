@@ -6,9 +6,11 @@ import lombok.Getter;
 import lombok.Setter;
 import med.voll.api.entity.MedicoEntity;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
-public class MedicoDto {
+public class MedicoDto implements Serializable {
 
     @NotNull(message = "O nome é obrigatório")
     @Size(min = 3, max = 255, message = "O nome deve ter entre 3 e 255 caracteres")
