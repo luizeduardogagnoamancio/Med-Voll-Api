@@ -26,6 +26,10 @@ public class PacienteComponent {
 
     private final int PACIENTES_POR_PAGINA = 10;
 
+    public PacienteComponent(PacienteRepository pacienteRepository) {
+        this.pacienteRepository = pacienteRepository;
+    }
+
     public PacienteEntity criarPaciente(@Validated PacienteDto pacienteDto) {
         log.info("Entrou no Component para criar uma instância de PacienteEntity");
         PacienteEntity pacienteEntity = new PacienteEntity();
@@ -70,5 +74,12 @@ public class PacienteComponent {
         }
 
         pacienteRepository.save(paciente);
+    }
+
+    public void excluirPaciente(String cpf) {
+        log.info("Entrou no Component para excluir o paciente");
+        PacienteEntity paciente = buscarPorCpf(cpf);
+
+        pacienteRepository.delete(paciente);
     }
 }

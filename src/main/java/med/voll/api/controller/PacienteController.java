@@ -45,4 +45,12 @@ public class PacienteController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @DeleteMapping(value = "excluir/{cpf}")
+    public ResponseEntity<Void> excluirPaciente(@PathVariable String cpf) {
+        log.info("DELETE - entrou no endpoint paciente/excluir");
+        pacienteService.excluirPaciente(cpf);
+        log.info("DELETE - saindo do endpoint paciente/excluir");
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

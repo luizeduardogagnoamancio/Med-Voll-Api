@@ -30,8 +30,13 @@ public class PacienteServiceImpl implements PacienteService {
     }
 
     @Validated
-    public void atualizarPaciente(String crm, SolicitacaoPacienteAtualizarDto solicitacaoPacienteAtualizarDto) {
+    public void atualizarPaciente(String cpf, SolicitacaoPacienteAtualizarDto solicitacaoPacienteAtualizarDto) {
         log.info("Entrou no Service para criar uma solicitação de atualização de pacientes");
-        pacienteComponent.atualizarPaciente(crm, solicitacaoPacienteAtualizarDto);
+        pacienteComponent.atualizarPaciente(cpf, solicitacaoPacienteAtualizarDto);
+    }
+
+    public void excluirPaciente(String cpf) {
+        log.info("Entrou no Service para criar uma solicitação de exclusão do paciente");
+        pacienteComponent.excluirPaciente(cpf);
     }
 }

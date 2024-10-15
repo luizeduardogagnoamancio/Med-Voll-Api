@@ -10,5 +10,7 @@ public interface PacienteService {
 
     Page<PacienteDtoListagem> listarPacientes(int pagina);
 
-    void atualizarPaciente(String crm, SolicitacaoPacienteAtualizarDto solicitacaoMedicoAtualizarDto);
+    void atualizarPaciente(String cpf, SolicitacaoPacienteAtualizarDto solicitacaoPacienteAtualizarDto);
+
+    void excluirPaciente(String cpf);
 }
