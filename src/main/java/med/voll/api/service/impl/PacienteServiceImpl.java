@@ -1,10 +1,11 @@
-package med.voll.api.service;
+package med.voll.api.service.impl;
 
 import lombok.extern.log4j.Log4j2;
 import med.voll.api.component.PacienteComponent;
 import med.voll.api.dto.PacienteDto;
 import med.voll.api.dto.PacienteDtoListagem;
 import med.voll.api.dto.SolicitacaoPacienteAtualizarDto;
+import med.voll.api.service.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class PacienteServiceImpl implements PacienteService {
     }
 
     @Validated
-    public void atualizarPaciente(String cpf, SolicitacaoPacienteAtualizarDto solicitacaoPacienteAtualizarDto) {
+    public void  atualizarPaciente(String cpf, SolicitacaoPacienteAtualizarDto solicitacaoPacienteAtualizarDto) {
         log.info("Entrou no Service para criar uma solicitação de atualização de pacientes");
         pacienteComponent.atualizarPaciente(cpf, solicitacaoPacienteAtualizarDto);
     }

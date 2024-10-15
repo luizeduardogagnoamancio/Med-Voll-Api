@@ -1,10 +1,11 @@
-package med.voll.api.service;
+package med.voll.api.service.impl;
 
 import lombok.extern.log4j.Log4j2;
 import med.voll.api.component.MedicoComponent;
 import med.voll.api.dto.MedicoDto;
 import med.voll.api.dto.MedicoDtoListagem;
 import med.voll.api.dto.SolicitacaoMedicoAtualizarDto;
+import med.voll.api.service.MedicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
