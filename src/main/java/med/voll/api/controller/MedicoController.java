@@ -19,6 +19,7 @@ public class MedicoController {
 
     @Autowired
     private MedicoService medicoService;
+
     @PostMapping(value = "cadastrar")
     public ResponseEntity<Void> cadastrar(
             @RequestBody @Validated MedicoDto medico) {

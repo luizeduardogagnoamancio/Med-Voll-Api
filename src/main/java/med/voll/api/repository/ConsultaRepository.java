@@ -1,5 +1,8 @@
 package med.voll.api.repository;
 
-public class ConsultaRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import med.voll.api.entity.ConsultaEntity;
+
+public interface ConsultaRepository extends JpaRepository<ConsultaEntity, Long> {
 
 }
