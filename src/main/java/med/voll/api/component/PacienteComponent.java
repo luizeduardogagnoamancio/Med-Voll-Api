@@ -82,4 +82,9 @@ public class PacienteComponent {
 
         pacienteRepository.delete(paciente);
     }
+
+    public void validarPacienteConsulta(String cpfPaciente) {
+        PacienteEntity paciente = buscarPorCpf(cpfPaciente);
+
+    }
 }
