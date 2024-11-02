@@ -85,4 +85,7 @@ public class MedicoComponent {
     }
 
 
+    public MedicoEntity buscarPorEspecialidade(String especialidade) {
+        return medicoRepository.findByEspecialidade(especialidade);
+    }
 }

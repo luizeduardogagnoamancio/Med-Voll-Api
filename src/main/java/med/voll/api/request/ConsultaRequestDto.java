@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class ConsultaRequestDto {
   private String cpfPaciente;
-  private String crm;
+  private String especialidade;
   private Date horarioConsulta;
 
 }

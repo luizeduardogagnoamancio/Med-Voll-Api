@@ -6,8 +6,10 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
+import med.voll.api.entity.MedicoEntity;
 import org.springframework.stereotype.Component;
 import lombok.extern.log4j.Log4j2;
 import med.voll.api.entity.ConsultaEntity;
@@ -25,8 +27,14 @@ public class ConsultaComponent {
 
   private final ConsultaRepository consultaRepository;
 
-  public ConsultaComponent(ConsultaRepository consultaRepository) {
+  private final PacienteComponent pacienteComponent;
+
+  private final MedicoComponent medicoComponent;
+
+  public ConsultaComponent(ConsultaRepository consultaRepository, PacienteComponent pacienteComponent, MedicoComponent medicoComponent) {
     this.consultaRepository = consultaRepository;
+    this.pacienteComponent = pacienteComponent;
+    this.medicoComponent = medicoComponent;
   }
 
   public boolean buscaConsultaPorData(Date dataConsulta) {
@@ -40,6 +48,10 @@ public class ConsultaComponent {
   }
 
   public void validarPacienteConsulta(String cpfPaciente) {
+    if (Objects.isNull(pacienteComponent.buscarPorCpf(cpfPaciente))) {
+      throw new RuntimeException("Paciente não cadastrado no sistema.");
+    }
+
     List<ConsultaEntity> consultas = consultaRepository.findAllByPacienteCpf(cpfPaciente);
 
     Map<LocalDate, List<ConsultaEntity>> consultasPorData = consultas.stream()
@@ -77,5 +89,15 @@ public class ConsultaComponent {
     if (buscaConsultaPorData(horarioConsulta)) {
       throw new HorarioIndisponivelException("Horário já ocupado para consulta.");
     }
+  }
+
+  public void validarMedicoConsulta(String especialidade, Date horarioConsulta) {
+    MedicoEntity medico = medicoComponent.buscarPorEspecialidade(especialidade);
+
+
+    if (Objects.isNull(medico)) {
+      throw new RuntimeException("Não foi encontrado médico com a especialidade desejada");
+    }
+
   }
 }

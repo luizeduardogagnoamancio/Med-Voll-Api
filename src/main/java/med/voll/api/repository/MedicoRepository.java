@@ -15,4 +15,6 @@ public interface MedicoRepository extends JpaRepository<MedicoEntity, Long> {
 
     @Query("SELECT new med.voll.api.dto.MedicoDtoListagem(m.nome, m.email, m.crm, m.especialidade) FROM MedicoEntity m")
     Page<MedicoDtoListagem> listarMedicos(Pageable pageable);
+
+    MedicoEntity findByEspecialidade(String especialidade);
 }
