@@ -6,18 +6,18 @@ import java.time.LocalTime;
 
 public class DateUtils {
 
-  public static boolean isHorarioValido(LocalTime time) {
+  public static boolean isHorarioInValido(LocalTime time) {
     LocalTime start = LocalTime.of(7, 0);
     LocalTime end = LocalTime.of(19, 0);
 
     return time.isBefore(start) || time.isAfter(end);
   }
 
-  public static boolean isIntervaloValido(LocalDateTime consultaDateTime) {
+  public static boolean isIntervaloInValido(LocalDateTime consultaDateTime) {
     return consultaDateTime.isBefore(LocalDateTime.now().plusMinutes(30));
   }
 
-  public static boolean isDiaSemanaValido(DayOfWeek dayOfWeek) {
+  public static boolean isDiaSemanaInValido(DayOfWeek dayOfWeek) {
     return dayOfWeek == DayOfWeek.SUNDAY;
   }
 

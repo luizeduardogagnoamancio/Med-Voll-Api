@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -84,8 +85,8 @@ public class MedicoComponent {
         medicoRepository.delete(medico);
     }
 
-
-    public MedicoEntity buscarPorEspecialidade(String especialidade) {
-        return medicoRepository.findByEspecialidade(especialidade);
+    public List<MedicoEntity> buscarMedicoDisponivel(String especialidade, Date horarioConsulta) {
+        return medicoRepository.findAllByEspecialidade(especialidade);
     }
+
 }

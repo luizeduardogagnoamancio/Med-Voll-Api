@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import med.voll.api.entity.ConsultaEntity;
+import med.voll.api.entity.MedicoEntity;
 
 public interface ConsultaRepository extends JpaRepository<ConsultaEntity, Long> {
   boolean existsByHorarioConsulta(Date horarioConsulta);
@@ -20,4 +21,6 @@ public interface ConsultaRepository extends JpaRepository<ConsultaEntity, Long> 
       @Param("data") LocalDate data);
 
   List<ConsultaEntity> findAllByPacienteCpf(String cpfPaciente);
+
+  boolean existsByMedicoAndHorarioConsulta(MedicoEntity medico, Date horarioConsulta);
 }

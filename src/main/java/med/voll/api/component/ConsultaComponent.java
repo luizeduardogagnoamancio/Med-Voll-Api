@@ -13,12 +13,9 @@ import med.voll.api.entity.MedicoEntity;
 import org.springframework.stereotype.Component;
 import lombok.extern.log4j.Log4j2;
 import med.voll.api.entity.ConsultaEntity;
-import med.voll.api.exception.ConsultaExistenteException;
-import med.voll.api.exception.DiaInvalidoException;
-import med.voll.api.exception.HorarioIndisponivelException;
-import med.voll.api.exception.HorarioInvalidoException;
-import med.voll.api.exception.IntervaloInvalidoException;
+import med.voll.api.entity.PacienteEntity;
 import med.voll.api.repository.ConsultaRepository;
+import med.voll.api.request.ConsultaRequestDto;
 import med.voll.api.utils.DateUtils;
 
 @Log4j2
@@ -37,18 +34,38 @@ public class ConsultaComponent {
     this.medicoComponent = medicoComponent;
   }
 
+  public void cadastrarConsulta(ConsultaRequestDto consultaRequestDto) {
+    log.info("Entrou no component para validar a consulta");
+    this.validarHorarioAgendamento(consultaRequestDto.getHorarioConsulta());
+    PacienteEntity paciente = this.validarPacienteConsulta(consultaRequestDto.getCpfPaciente());
+    MedicoEntity medico = this.buscarMedicoConsulta(consultaRequestDto.getEspecialidade(), consultaRequestDto.getHorarioConsulta());
+    ConsultaEntity consulta = this.consultaBuilder(consultaRequestDto, medico, paciente);
+    this.cadastra(consulta);
+  }
+
   public boolean buscaConsultaPorData(Date dataConsulta) {
     log.info("Entrou no Component para realizar a busca da consulta por data.");
     return this.consultaRepository.existsByHorarioConsulta(dataConsulta);
   }
 
-  public void cadastraConsulta(ConsultaEntity consulta){
+  public void cadastra(ConsultaEntity consulta){
     log.info("Entrou no component para realizar o cadastro da consulta");
+
     this.consultaRepository.save(consulta);
   }
 
-  public void validarPacienteConsulta(String cpfPaciente) {
-    if (Objects.isNull(pacienteComponent.buscarPorCpf(cpfPaciente))) {
+  private ConsultaEntity consultaBuilder(ConsultaRequestDto consultaRequestDto, MedicoEntity medico, PacienteEntity paciente) {
+    ConsultaEntity consulta = new ConsultaEntity();
+    consulta.setHorarioConsulta(consultaRequestDto.getHorarioConsulta());
+    consulta.setPaciente(paciente);
+    consulta.setMedico(medico);
+    
+    return consulta;
+  }
+
+  public PacienteEntity validarPacienteConsulta(String cpfPaciente) {
+    PacienteEntity paciente = pacienteComponent.buscarPorCpf(cpfPaciente);
+    if (Objects.isNull(paciente)) {
       throw new RuntimeException("Paciente não cadastrado no sistema.");
     }
 
@@ -62,8 +79,10 @@ public class ConsultaComponent {
 
     LocalDate hoje = LocalDate.now();
     if (consultasPorData.containsKey(hoje)) {
-      throw new ConsultaExistenteException("O paciente já possui uma consulta marcada para hoje.");
+      throw new RuntimeException("O paciente já possui uma consulta marcada para hoje.");
     }
+    
+    return paciente;
   }
 
 
@@ -73,31 +92,33 @@ public class ConsultaComponent {
         .atZone(ZoneId.systemDefault())
         .toLocalDateTime();
 
-    if (DateUtils.isHorarioValido(consultaDateTime.toLocalTime())) {
-      throw new HorarioInvalidoException("Horário da consulta deve estar entre 07:00 e 19:00.");
+    if (DateUtils.isHorarioInValido(consultaDateTime.toLocalTime())) {
+      throw new RuntimeException("Horário da consulta deve estar entre 07:00 e 19:00.");
     }
 
-    if (DateUtils.isIntervaloValido(consultaDateTime)) {
-      throw new IntervaloInvalidoException(
-          "A consulta deve ser agendada pelo menos 30 minutos antes do horário de atendimento.");
+    if (DateUtils.isIntervaloInValido(consultaDateTime)) {
+      throw new RuntimeException("A consulta deve ser agendada pelo menos 30 minutos antes do horário de atendimento.");
     }
 
-    if (DateUtils.isDiaSemanaValido(consultaDateTime.getDayOfWeek())) {
-      throw new DiaInvalidoException("As consultas só podem ser marcadas de segunda à sábado.");
+    if (DateUtils.isDiaSemanaInValido(consultaDateTime.getDayOfWeek())) {
+      throw new RuntimeException("As consultas só podem ser marcadas de segunda à sábado.");
     }
 
     if (buscaConsultaPorData(horarioConsulta)) {
-      throw new HorarioIndisponivelException("Horário já ocupado para consulta.");
+      throw new RuntimeException("Horário já ocupado para consulta.");
     }
   }
 
-  public void validarMedicoConsulta(String especialidade, Date horarioConsulta) {
-    MedicoEntity medico = medicoComponent.buscarPorEspecialidade(especialidade);
-
-
-    if (Objects.isNull(medico)) {
-      throw new RuntimeException("Não foi encontrado médico com a especialidade desejada");
+  public MedicoEntity buscarMedicoConsulta(String especialidade, Date horarioConsulta) {
+    List<MedicoEntity> medicos = medicoComponent.buscarMedicoDisponivel(especialidade, horarioConsulta);
+    
+    for (MedicoEntity medico : medicos) {
+      boolean consultaExistente = consultaRepository.existsByMedicoAndHorarioConsulta(medico, horarioConsulta);
+      if (!consultaExistente) {
+        return medico; // Retorna o primeiro médico disponível
+      }
     }
 
+    throw new RuntimeException("Nenhum médico disponível com a especialidade desejada para o horário solicitado");
   }
 }
