@@ -3,13 +3,11 @@ package med.voll.api.component;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import med.voll.api.entity.MedicoEntity;
+import med.voll.api.request.ConsultaCancelarRequestDto;
 import org.springframework.stereotype.Component;
 import lombok.extern.log4j.Log4j2;
 import med.voll.api.entity.ConsultaEntity;
@@ -115,10 +113,34 @@ public class ConsultaComponent {
     for (MedicoEntity medico : medicos) {
       boolean consultaExistente = consultaRepository.existsByMedicoAndHorarioConsulta(medico, horarioConsulta);
       if (!consultaExistente) {
-        return medico; // Retorna o primeiro médico disponível
+        return medico;
       }
     }
 
     throw new RuntimeException("Nenhum médico disponível com a especialidade desejada para o horário solicitado");
+  }
+
+  private ConsultaEntity buscarPorId(Long id) {
+    return consultaRepository.findById(id).orElseThrow(() -> new RuntimeException("Não existe consulta com esse Id"));
+  }
+
+  private void validarConsulta(Date horarioConsulta) {
+    LocalDateTime horarioDateTime = horarioConsulta.toInstant()
+            .atZone(ZoneId.systemDefault())
+            .toLocalDateTime();
+
+    if (horarioDateTime.isBefore(LocalDateTime.now().plusHours(24))) {
+      throw new RuntimeException("A consulta deve ser agendada com pelo menos 24 horas de antecedência");
+    }
+  }
+
+  private void excluirConsulta(ConsultaEntity consulta) {
+    consultaRepository.delete(consulta);
+  }
+
+  public void cancelarConsulta(ConsultaCancelarRequestDto consultaCancelarRequestDto) {
+    ConsultaEntity consulta = buscarPorId(consultaCancelarRequestDto.getConsultaId());
+    this.validarConsulta(consulta.getHorarioConsulta());
+    excluirConsulta(consulta);
   }
 }

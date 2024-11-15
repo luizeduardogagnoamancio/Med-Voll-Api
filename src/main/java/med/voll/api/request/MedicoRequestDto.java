@@ -1,4 +1,4 @@
-package med.voll.api.dto;
+package med.voll.api.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class MedicoDto implements Serializable {
+public class MedicoRequestDto implements Serializable {
 
     @NotNull(message = "O nome é obrigatório")
     @Size(min = 3, max = 255, message = "O nome deve ter entre 3 e 255 caracteres")
@@ -36,7 +36,7 @@ public class MedicoDto implements Serializable {
     @Size(min = 25, max = 255, message = "O endereço deve ter entre 200 e 255 caracteres")
     private String endereco;
 
-    public MedicoDto(MedicoEntity medico) {
+    public MedicoRequestDto(MedicoEntity medico) {
         this.nome = medico.getNome();
         this.telefone = medico.getTelefone();
         this.email = medico.getEmail();

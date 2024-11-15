@@ -2,7 +2,7 @@ package med.voll.api.service.impl;
 
 import lombok.extern.log4j.Log4j2;
 import med.voll.api.component.MedicoComponent;
-import med.voll.api.dto.MedicoDto;
+import med.voll.api.request.MedicoRequestDto;
 import med.voll.api.dto.MedicoDtoListagem;
 import med.voll.api.dto.SolicitacaoMedicoAtualizarDto;
 import med.voll.api.service.MedicoService;
@@ -18,7 +18,7 @@ public class MedicoServiceImpl implements MedicoService {
     private MedicoComponent medicoComponent;
 
     @Validated
-    public void cadastarMedico(MedicoDto medico) {
+    public void cadastarMedico(MedicoRequestDto medico) {
         log.info("Entrou no Service para criar uma solicitação de cadastro de médico");
         medicoComponent.salvar(medicoComponent.criarMedico(medico));
     }

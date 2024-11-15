@@ -1,19 +1,17 @@
 package med.voll.api.component;
 
 import lombok.extern.log4j.Log4j2;
-import med.voll.api.dto.MedicoDto;
+import med.voll.api.request.MedicoRequestDto;
 import med.voll.api.dto.MedicoDtoListagem;
 import med.voll.api.dto.SolicitacaoMedicoAtualizarDto;
 import med.voll.api.entity.MedicoEntity;
 import med.voll.api.repository.MedicoRepository;
-import med.voll.api.utils.MedicoUtils;
 import med.voll.api.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +29,7 @@ public class MedicoComponent {
         this.medicoRepository = medicoRepository;
     }
 
-    public MedicoEntity criarMedico(@Validated MedicoDto medico) {
+    public MedicoEntity criarMedico(@Validated MedicoRequestDto medico) {
         log.info("Entrou no Component para criar uma instância de MedicoEntity");
         MedicoEntity medicoEntity = new MedicoEntity();
         medicoEntity.setNome(medico.getNome());

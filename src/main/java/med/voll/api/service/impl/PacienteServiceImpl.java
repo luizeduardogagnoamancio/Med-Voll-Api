@@ -2,7 +2,7 @@ package med.voll.api.service.impl;
 
 import lombok.extern.log4j.Log4j2;
 import med.voll.api.component.PacienteComponent;
-import med.voll.api.dto.PacienteDto;
+import med.voll.api.request.PacienteRequestDto;
 import med.voll.api.dto.PacienteDtoListagem;
 import med.voll.api.dto.SolicitacaoPacienteAtualizarDto;
 import med.voll.api.service.PacienteService;
@@ -19,7 +19,7 @@ public class PacienteServiceImpl implements PacienteService {
     private PacienteComponent pacienteComponent;
 
     @Validated
-    public void cadastarPaciente(PacienteDto paciente) {
+    public void cadastarPaciente(PacienteRequestDto paciente) {
         log.info("Entrou no Service para criar uma solicitação de cadastro de paciente");
         pacienteComponent.salvar(pacienteComponent.criarPaciente(paciente));
     }

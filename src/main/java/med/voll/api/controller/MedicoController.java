@@ -1,7 +1,7 @@
 package med.voll.api.controller;
 
 import lombok.extern.log4j.Log4j2;
-import med.voll.api.dto.MedicoDto;
+import med.voll.api.request.MedicoRequestDto;
 import med.voll.api.dto.MedicoDtoListagem;
 import med.voll.api.dto.SolicitacaoMedicoAtualizarDto;
 import med.voll.api.service.MedicoService;
@@ -22,7 +22,7 @@ public class MedicoController {
 
     @PostMapping(value = "cadastrar")
     public ResponseEntity<Void> cadastrar(
-            @RequestBody @Validated MedicoDto medico) {
+            @RequestBody @Validated MedicoRequestDto medico) {
         log.info("POST - entrou no endpoint medico/cadastrar");
         medicoService.cadastarMedico(medico);
         log.info("POST - saindo do endpoint medico/cadastrar");
