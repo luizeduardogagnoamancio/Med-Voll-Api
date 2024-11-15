@@ -18,10 +18,9 @@ public class PacienteServiceImpl implements PacienteService {
     @Autowired
     private PacienteComponent pacienteComponent;
 
-    @Validated
     public void cadastarPaciente(PacienteRequestDto paciente) {
         log.info("Entrou no Service para criar uma solicitação de cadastro de paciente");
-        pacienteComponent.salvar(pacienteComponent.criarPaciente(paciente));
+        pacienteComponent.salvar(paciente);
     }
 
     @Validated

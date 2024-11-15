@@ -1,6 +1,5 @@
 package med.voll.api.component;
 
-
 import lombok.extern.log4j.Log4j2;
 import med.voll.api.dto.*;
 import med.voll.api.entity.PacienteEntity;
@@ -13,7 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.Optional;
 import java.util.Set;
@@ -21,9 +19,8 @@ import java.util.Set;
 @Log4j2
 @Component
 public class PacienteComponent {
-
     @Autowired
-    private PacienteRepository pacienteRepository;
+    private final PacienteRepository pacienteRepository;
 
     private final int PACIENTES_POR_PAGINA = 10;
 
@@ -31,7 +28,7 @@ public class PacienteComponent {
         this.pacienteRepository = pacienteRepository;
     }
 
-    public PacienteEntity criarPaciente(@Validated PacienteRequestDto pacienteRequestDto) {
+    public PacienteEntity criarPaciente(PacienteRequestDto pacienteRequestDto) {
         log.info("Entrou no Component para criar uma instância de PacienteEntity");
         PacienteEntity pacienteEntity = new PacienteEntity();
         pacienteEntity.setNome(pacienteRequestDto.getNome());
@@ -44,8 +41,9 @@ public class PacienteComponent {
 
     }
 
-    public void salvar(PacienteEntity paciente) {
+    public void salvar(PacienteRequestDto pacienteRequestDto) {
         log.info("Entrou no Component para salvar uma instância de Paciente");
+        PacienteEntity paciente =  criarPaciente(pacienteRequestDto);
         pacienteRepository.save(paciente);
     }
 
@@ -82,10 +80,5 @@ public class PacienteComponent {
         PacienteEntity paciente = buscarPorCpf(cpf);
 
         pacienteRepository.delete(paciente);
-    }
-
-    public void validarPacienteConsulta(String cpfPaciente) {
-        PacienteEntity paciente = buscarPorCpf(cpfPaciente);
-
     }
 }
