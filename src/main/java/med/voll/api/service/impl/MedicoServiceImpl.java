@@ -20,7 +20,7 @@ public class MedicoServiceImpl implements MedicoService {
     @Validated
     public void cadastarMedico(MedicoRequestDto medico) {
         log.info("Entrou no Service para criar uma solicitação de cadastro de médico");
-        medicoComponent.salvar(medicoComponent.criarMedico(medico));
+        medicoComponent.salvar(medico);
     }
 
     @Validated

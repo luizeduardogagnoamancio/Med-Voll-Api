@@ -108,7 +108,7 @@ public class ConsultaComponent {
   }
 
   public MedicoEntity buscarMedicoConsulta(String especialidade, Date horarioConsulta) {
-    List<MedicoEntity> medicos = medicoComponent.buscarMedicoDisponivel(especialidade, horarioConsulta);
+    List<MedicoEntity> medicos = medicoComponent.buscarMedicoDisponivel(especialidade);
     
     for (MedicoEntity medico : medicos) {
       boolean consultaExistente = consultaRepository.existsByMedicoAndHorarioConsulta(medico, horarioConsulta);

@@ -12,7 +12,6 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -43,8 +42,9 @@ public class MedicoComponent {
 
     }
 
-    public void salvar(MedicoEntity medico) {
+    public void salvar(MedicoRequestDto medicoRequestDto) {
         log.info("Entrou no Component para salvar uma instância de Médico");
+        MedicoEntity medico = buscarPorCrm(medicoRequestDto.getCrm());
         medicoRepository.save(medico);
     }
 
@@ -83,7 +83,7 @@ public class MedicoComponent {
         medicoRepository.delete(medico);
     }
 
-    public List<MedicoEntity> buscarMedicoDisponivel(String especialidade, Date horarioConsulta) {
+    public List<MedicoEntity> buscarMedicoDisponivel(String especialidade) {
         return medicoRepository.findAllByEspecialidade(especialidade);
     }
 
