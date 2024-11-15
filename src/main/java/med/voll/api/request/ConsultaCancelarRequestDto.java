@@ -1,6 +1,6 @@
 package med.voll.api.request;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +9,6 @@ import lombok.Setter;
 public class ConsultaCancelarRequestDto {
     private Long consultaId;
 
-    @NotBlank(message = "O motivo do cancelamento é obrigatório")
+    @NotNull(message = "O motivo do cancelamento é obrigatório")
     private String motivoCancelamento;
 }
