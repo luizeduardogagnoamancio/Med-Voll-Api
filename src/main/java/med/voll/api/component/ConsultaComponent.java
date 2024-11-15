@@ -35,7 +35,7 @@ public class ConsultaComponent {
   public void cadastrarConsulta(ConsultaRequestDto consultaRequestDto) {
     log.info("Entrou no component para validar a consulta");
     this.validarHorarioAgendamento(consultaRequestDto.getHorarioConsulta());
-    PacienteEntity paciente = this.validarPacienteConsulta(consultaRequestDto.getCpfPaciente());
+    PacienteEntity paciente = this.buscarPacienteConsulta(consultaRequestDto.getCpfPaciente());
     MedicoEntity medico = this.buscarMedicoConsulta(consultaRequestDto.getEspecialidade(), consultaRequestDto.getHorarioConsulta());
     ConsultaEntity consulta = this.consultaBuilder(consultaRequestDto, medico, paciente);
     this.cadastra(consulta);
@@ -61,7 +61,7 @@ public class ConsultaComponent {
     return consulta;
   }
 
-  public PacienteEntity validarPacienteConsulta(String cpfPaciente) {
+  public PacienteEntity buscarPacienteConsulta(String cpfPaciente) {
     PacienteEntity paciente = pacienteComponent.buscarPorCpf(cpfPaciente);
     if (Objects.isNull(paciente)) {
       throw new RuntimeException("Paciente não cadastrado no sistema.");
